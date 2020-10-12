@@ -8,7 +8,8 @@ RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.n
 RUN yum -y install https://rpms.remirepo.net/enterprise/remi-release-7.rpm
 RUN yum -y install yum-utils
 RUN yum-config-manager --enable remi-php74
-RUN yum install php  php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json -y
+RUN yum install php  php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json php-pecl-redis php-pecl-mongodb -y
+RUN yum install -y composer
 
 # swoole 4.5.4
 COPY v4.5.4.zip /tmp/
@@ -22,7 +23,7 @@ RUN rm /tmp/v4.5.4.zip && rm -rf /tmp/swoole-src-4.5.4/
 
 #  swoole/ext-postgresql
 RUN yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-RUN yum install -y centos-release-scl llvm-toolset-7.0 libpq redis mongodb
+RUN yum install -y centos-release-scl llvm-toolset-7.0 libpq
 RUN yum install -y postgresql12-devel
 
 COPY master.zip /tmp/
@@ -33,7 +34,7 @@ RUN cd /tmp/ext-postgresql-master && \
     ./configure && \
     make && make install
 
-RUN echo "extension=mongodb.so" >> /etc/php.d/60-mongodb.ini
+# RUN echo "extension=mongodb.so" >> /etc/php.d/60-mongodb.ini
 RUN echo "extension=swoole_postgresql.so" >> /etc/php.d/80-swoole.ini
 
 RUN systemctl enable php-fpm
