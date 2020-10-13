@@ -3,6 +3,11 @@ FROM centos:7
 RUN yum install git wget vim ntpdate zip unzip openssl make zsh update -y
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
+RUN yum install epel-release -y
+
+# install nginx & go
+RUN yum install nginx  go initscripts -y
+
 # php 7.4
 RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum -y install https://rpms.remirepo.net/enterprise/remi-release-7.rpm
@@ -38,3 +43,4 @@ RUN cd /tmp/ext-postgresql-master && \
 RUN echo "extension=swoole_postgresql.so" >> /etc/php.d/80-swoole.ini
 
 RUN systemctl enable php-fpm
+RUN systemctl enable nginx
