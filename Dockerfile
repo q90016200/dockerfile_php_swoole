@@ -13,7 +13,7 @@ RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.n
 RUN yum -y install https://rpms.remirepo.net/enterprise/remi-release-7.rpm
 RUN yum -y install yum-utils
 RUN yum-config-manager --enable remi-php74
-RUN yum install php  php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json php-pecl-redis php-pecl-mongodb php-pgsql -y
+RUN yum install php  php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json php-pecl-redis php-pecl-mongodb -y
 RUN yum install -y composer
 
 # swoole 4.5.4
@@ -41,6 +41,8 @@ RUN cd /tmp/ext-postgresql-master && \
 
 # RUN echo "extension=mongodb.so" >> /etc/php.d/60-mongodb.ini
 RUN echo "extension=swoole_postgresql.so" >> /etc/php.d/80-swoole.ini
+
+RUN yum install -y php-pgsql
 
 RUN systemctl enable php-fpm
 RUN systemctl enable nginx
